@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery Login Form with Validation</title>
+    <style>
+        #login-container { margin: 20px; }
+        #login-form { display: none; margin-top: 10px; }
+        .error-message { color: red; display: none; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    $('#show-login').click(function() {
+        // 显示登录框
+        $('#registrationForm').show();
+        // 可选：将登录框的背景色设置为白色，文字颜色设置为黑色
+        $('#registrationForm').css({
+            'color': 'black'
+        });
+    });
+    $('#hide-login').click(function() {
+        // 隐藏登录框
+        $('#registrationForm').hide();
+    });
+    <button id="show-login">登录</button>
+        <button id="hide-login">隐藏</button>
+<div id="login-container">
+    <button id="toggle-login">登录</button>
+    <form id="login-form">
+        <label for="username">用户名:</label>
+        <input type="text" id="username" name="username">
+        <div class="error-message" id="username-error"></div>
+
+        <label for="password">密码:</label>
+        <input type="password" id="password" name="password">
+        <div class="error-message" id="password-error"></div>
+
+        <label for="email">电子邮箱:</label>
+        <input type="email" id="email" name="email">
+        <div class="error-message" id="email-error"></div>
+
+        <button type="submit">提交</button>
+    </form>
+</div>
+
+<script>
+$(document).ready(function() {
+    // 切换登录表单的显示与隐藏
+    $('#toggle-login').click(function() {
+        $('#login-form').toggle();
+    });
+
+    // 表单提交事件处理
+    $('#login-form').submit(function(e) {
+        e.preventDefault(); // 阻止表单默认提交行为
+        var username = $('#username').val().trim();
+        var password = $('#password').val().trim();
+        var email = $('#email').val().trim();
+
+        // 清除之前的错误信息
+        $('.error-message').text('').hide();
+
+        // 用户名格式校验
+        if (!username || username.length < 3 || username.length > 20) {
+            $('#username-error').text('用户名必须在3到20位之间').show();
+            return false;
+        }
+
+        // 密码格式校验
+        if (!password || password.length < 6) {
+            $('#password-error').text('密码必须至少为6位').show();
+            return false;
+        }
+
+        // 电子邮箱格式校验
+        if (!email) {
+            $('#email-error').text('电子邮箱不能为空').show();
+            return false;
+        }
+
+        // 使用正则表达式校验电子邮箱格式
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            $('#email-error').text('电子邮箱格式不正确').show();
+            return false;
+        }
+
+        // 如果所有校验通过，可以在这里处理登录逻辑
+        console.log('Username:', username, 'Password:', password, 'Email:', email);
+        alert('登录成功！');
+        // 清空表单
+        $('#login-form')[0].reset();
+        // 隐藏表单
+        $('#login-form').hide();
+
+        return false; // 阻止表单提交
+    });
+});
+</script>
+
+</body>
+</html>

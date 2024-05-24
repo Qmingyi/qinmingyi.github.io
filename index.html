@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>qmy的网页</title>
+<link href="images/css.css" rel="stylesheet" type="text/css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style type="text/css">
+    video {
+        width: 400px;
+        height: 300px;
+        display: block; 
+        margin: 0 auto;
+    }
+    .audio-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container {
+        max-width: 400px;
+        margin: 0 auto;
+        margin-top: 20px;
+        font-size: larger;
+        border: 2px solid #eeeeee;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    form div {
+        margin-bottom: 15px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+    }
+    .error {
+        color: red;
+        font-size: 0.8em;
+    }
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background: #5cb85c;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #4cae4c;
+    }  
+</style>
+<script>
+    // 当文档加载完成后，绑定点击事件到按钮
+    $(document).ready(function() {
+        // 切换登录表单的显示与隐藏
+    $('#toggle-login').click(function() {
+        $('#registrationForm').toggle();
+    });
+    // 绑定表单的提交事件
+    $('#registrationForm').submit(function(e) {
+        e.preventDefault(); // 阻止表单默认提交行为
+        var username = $('#username').val().trim();
+        var password = $('#password').val().trim();
+        var email = $('#email').val().trim();
+        var isValid = true;
+
+        // 清空之前的校验结果
+        $('.error').text('').hide();
+
+        // 用户名校验：非空且长度在6到12位之间
+        if (!username || username.length < 6 || username.length > 12) {
+            $('#username').after('<span class="error">用户名必须在6到12位之间</span>');
+            isValid = false;
+        }
+
+        // 密码校验：非空且长度至少为8位
+        if (!password || password.length < 8) {
+            $('#password').after('<span class="error">密码必须至少为8位</span>');
+            isValid = false;
+        }
+
+        // 电子邮箱校验：非空且格式正确
+        if (!email) {
+            $('#email').after('<span class="error">电子邮箱不能为空</span>');
+            isValid = false;
+        } else if (!isValidEmail(email)) {
+            $('#email').after('<span class="error">电子邮箱格式不正确</span>');
+            isValid = false;
+        }
+
+        // 如果所有校验都通过，可以在这里处理登录逻辑
+        if (isValid) {
+            console.log('Username:', username, 'Password:', password, 'Email:', email);
+            // TODO: 处理登录逻辑
+            alert('登录成功！');
+            // 清空表单
+            $('#login-form')[0].reset();
+            // 隐藏表单
+            $('#login-form').hide();
+        }
+    });
+});
+
+// 电子邮箱格式校验函数
+function isValidEmail(email) {
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+    </script>
+</head>
+<body onload="play音乐();">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="nav">
+        <tr>
+            <td><a href="index.html"><img src="images/logo1.png" height="100" /></a></td>
+            <td width="100" align="center"><a href="jieshao.html">个人自序</a></td>
+            <td width="100" align="center"><a href="grade.html">个人成绩</a></td>
+            <td width="100" align="center"><a href="plan.html">个人规划</a></td>
+            <td width="100" align="center"><a href="shoucangjia.html">收藏夹</a></td>
+            <td width="100" align="center"><a href="life.html">日常生活</a></td>
+            <td width="100" align="center"><a href="jiaoliu.html">联系我们</a></td>
+        </tr>
+    </table>
+    <div class="audio-container">
+        <audio id="backgroundMusic" src="背景音乐.mp3" autoplay controls loop></audio>
+    </div>
+
+    <div class="container" id="login-container">
+        <button id="toggle-login">登录</button>
+        <form id="registrationForm">
+            <h2>用户登录</h2>
+            <div>
+                <label for="username">用户名:</label>
+                <input type="text" id="username" name="username">
+                <div class="error" id="usernameError"></div>
+            </div>
+            <div>
+                <label for="password">密码:</label>
+                <input type="password" id="password" name="password">
+                <div class="error" id="passwordError"></div>
+            </div>
+            <div>
+                <label for="email">电子邮箱:</label>
+                <input type="email" id="email" name="email">
+                <div class="error" id="emailError"></div>
+            </div>
+            <button id="submit-login" onclick="validateForm()">登录</button>
+        </form>
+    </div>
+    <script>
+        function validateForm() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var email = document.getElementById ("email").value;
+            var usernameError = document.getElementById('usernameError');
+            var passwordError = document.getElementById('passwordError');
+            var passwordError = document.getElementById('emailError');
+            // 清空之前的错误信息
+            usernameError.textContent = '';
+            passwordError.textContent = '';
+            emailError.textContent = '';
+            // 用户名验证：非空且至少3个字符
+            if (!username.trim()) {
+                usernameError.textContent = '用户名不能为空';
+                return false;
+            } else if (username.length < 3) {
+                usernameError.textContent = '用户名至少需要3个字符';
+                return false;
+            }
+            // 密码验证：非空且至少6个字符
+            if (!password) {
+                passwordError.textContent = '密码不能为空';
+                return false;
+            } else if (password.length < 6) {
+                passwordError.textContent = '密码至少需要6个字符';
+                return false;
+            }
+             // 检查电子邮箱格式是否正确
+            var emailPattern = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+            if (!emailPattern.test (email)) {
+                document.getElementById ("emailError").innerHTML = "电子邮箱格式不正确";
+                return false;
+            }
+            // 如果所有验证通过
+            alert('登录成功！');
+            return true;
+        }
+    </script>
+    <script>
+        function play音乐() {
+            var audio = new Audio('背景音乐.mp3');
+            audio.play();
+        }
+    </script>
+    <video src="帝王蝶.mp4" controls muted loop ></video>
+    <div id="div1">
+        <p>花自向阳开，人终往前走。喧闹任其喧闹，自有我自为之。</p>
+        <p>我们终其一生，不是为了要满足每一个人，只要你喜欢，每一秒都是豆蔻年华。我们不需要活在他人的言语下，外界的声音只是参考，不喜欢就不要参考。听歌，吹风，自愈；阅己，越己，悦己。</p>
+        <p>心若有所向往，何惧道阻且长。</p>
+    </div>
+    <p align="center"><a href="jieshao.html">——进入Qmy的网页——</a></p>
+</body>
+</html>
